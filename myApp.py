@@ -22,8 +22,18 @@ try:
         if how_to_load == 'Canada':
             df = pd.read_sql_query("SELECT * FROM canada_01_raw WHERE first = 'Kyle'", con)
             df[['city1', 'state1']] = df.location1.str.split(",",expand=True)
+            stateList = df.state1.unique()
+            states = st.selectbox('States', stateList)
+            for state in stateList:
+               df[df.state1 == state]
+        # for every element in stateList, filter the dataframe according to that
+            #states = []
+            #states = states.append(df.state1.unique())
+            #for statename in states:
+            #    if stateList == statename:
+            #        df = df['first', 'last', statename]
 #            df[['city2', 'state2']] = df.location2.str.split(",",expand=True)
-            df.drop(['unknown','location1', 'location2','time1', 'time2'],axis = 1, inplace = True)
+            #df.drop(['unknown','location1', 'location2','time1', 'time2'],axis = 1, inplace = True)
         if how_to_load == 'USA':
             df = pd.read_sql_query('SELECT * FROM usa_01_raw', con)           
             #df['city1', 'state1'] = df.location1.str.split(",", expand=True)            
