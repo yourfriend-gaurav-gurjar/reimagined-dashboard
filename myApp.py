@@ -25,12 +25,22 @@ try:
             stateList = df.state1.unique()
             states = st.selectbox('States', stateList)
             for state in stateList:
-               df[df.state1 == state]
+                if states == state:
+                    df = df[df.state1.isin([state])]
 
             df.drop(['unknown','location1', 'location2','time1', 'time2'],axis = 1, inplace = True)
         if how_to_load == 'USA':
-            df = pd.read_sql_query('SELECT * FROM usa_01_raw', con)           
-            #df['city1', 'state1'] = df.location1.str.split(",", expand=True)            
+            df = pd.read_sql_query('SELECT * FROM usa_01_raw', con)
+            # Not working
+            df[['city1', 'state1']] = df.location1.str.split(",",expand=True)
+            stateList = df.state1.unique()
+            states = st.selectbox('States', stateList)
+            for state in stateList:
+                if states == state:
+                    df = df[df.state1.isin([state])]
+
+            df.drop(['unknown','location1', 'location2','time1', 'time2'],axis = 1, inplace = True)
+            #df['city1', 'state1'] = df.location1.str.split(",", expand=True)
     if df is not None:
         with st.beta_expander('Data Preview', expanded=True):
             with st.spinner('Loading Data...'):
